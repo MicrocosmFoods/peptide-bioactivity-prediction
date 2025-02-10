@@ -40,7 +40,7 @@ workflow {
 
     // DIAMOND seq similarity to peptide database
     make_diamond_db(peptides_db_ch)
-    peptides_dmnd_db = make_diamond_db.peptides_diamond_db
+    peptides_dmnd_db = make_diamond_db.out.peptides_diamond_db
     diamond_blastp_input_ch = peptides_dmnd_db.combine(input_fastas)
     diamond_blastp(diamond_blastp_input_ch)
     blastp_results = diamond_blastp.out.blastp_hits_tsv
