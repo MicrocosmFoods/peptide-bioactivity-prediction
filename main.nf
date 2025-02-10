@@ -208,10 +208,10 @@ process merge_peptide_stats {
     conda "envs/tidyverse.yml"
 
     input:
-    path(deepsig_results)
     path(peptides_results)
+    path(deepsig_results)
     path(blastp_results)
-    path(autopeptideml_results)
+    path("autopeptideml_*.tsv")
 
     output:
     path("*.tsv"), emit: main_results_tsv
@@ -219,10 +219,10 @@ process merge_peptide_stats {
     script:
     """
     Rscript ${baseDir}/bin/merge_peptide_stats.R \\
-    ${deepsig_results} \\
     ${peptides_results} \\
+    ${deepsig_results} \\
     ${blastp_results} \\
-    ${autopeptideml_results} \\
+    ./ \\
     all_peptides_predictions.tsv
     """
 }
