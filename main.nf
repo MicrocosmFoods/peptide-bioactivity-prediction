@@ -54,7 +54,7 @@ workflow {
     autopeptideml_results = autopeptideml_predictions.out.autopeptideml_tsv.collect()
     
     // merge all stats
-    merge_peptide_stats(deepsig_results, peptides_results, blastp_results, autopeptideml_results)
+    merge_peptide_stats(peptides_results, deepsig_results, blastp_results, autopeptideml_results)
 }
 
 process combine_input_fastas {
