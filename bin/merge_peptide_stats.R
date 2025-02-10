@@ -19,16 +19,16 @@ output_tsv <- args[5]
 
 
 # read in files
-peptides_info <- read_tsv(peptides_info_tsv)
-deepsig_info <- read_tsv(deep_sig_tsv, col_names = c("peptide_id", 
-                                                    "tool",
-                                                    "deepsig_feature",
-                                                    "deepsig_feature_start",
-                                                    "deepsig_feature_end",
-                                                    "deepsig_feature_score",
-                                                    "tmp1",
-                                                    "tmp2",
-                                                    "deepsig_description"))  %>% 
+peptides_info <- read_tsv(peptides_info_tsv, col_names = TRUE)
+deepsig_info <- read_tsv(
+    deep_sig_tsv,
+    col_names = c(
+        "peptide_id", "tool", "deepsig_feature",
+        "deepsig_feature_start", "deepsig_feature_end",
+        "deepsig_feature_score", "tmp1", "tmp2",
+        "deepsig_description"
+    )
+) %>% 
     select(-tool, -tmp1, -tmp2)
 
 diamond_blast_results <- read_tsv(diamond_tsv)  %>% 
@@ -58,9 +58,7 @@ autopeptideml_df <- map_dfr(autopeptideml_files, function(file) {
 all_peptide_info <- deepsig_info  %>% 
     left_join(peptides_info, by = "peptide_id") %>% 
     left_join(diamond_blast_results, by = "peptide_id") %>% 
-    left_join(autopeptideml_df, by = "peptide_id") %>% 
-    mutate(sample_id = str_extract(peptide_id, "^.*?(?=_id_)")) %>% 
-    select(sample_id, peptide_id, everything())
+    left_join(autopeptideml_df, by = "peptide_id")
 
 # write to tsv
 write_tsv(all_peptide_info, output_tsv)
