@@ -185,7 +185,7 @@ process autopeptideml_predictions {
     tuple path(combined_fasta), path(model_dir), val(model_name)
 
     output:
-    tuple val(model_name), path("*.tsv"), emit: autopeptideml_tsv
+    path("*.tsv"), emit: autopeptideml_tsv
 
     script:
     """
