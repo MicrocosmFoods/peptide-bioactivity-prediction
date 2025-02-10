@@ -29,24 +29,25 @@ peptide_models_list = channel.fromPath(params.models_list)
 workflow {
     // combine all input fastas into one
     combine_input_fastas(input_fastas)
+    combined_fasta = combine_input_fastas.out.combined_fasta
 
     // deepsig predictions
-    deepsig(input_fastas)
+    deepsig(combined_fasta)
     deepsig_results = deepsig.out.deepsig_tsv
 
     // peptides.py sequence characterization
-    characterize_peptides(input_fastas)
+    characterize_peptides(combined_fasta)
     peptides_results = characterize_peptides.out.peptides_tsv
 
     // DIAMOND seq similarity to peptide database
     make_diamond_db(peptides_db_ch)
     peptides_dmnd_db = make_diamond_db.out.peptides_diamond_db
-    diamond_blastp_input_ch = peptides_dmnd_db.combine(input_fastas)
+    diamond_blastp_input_ch = peptides_dmnd_db.combine(combined_fasta)
     diamond_blastp(diamond_blastp_input_ch)
     blastp_results = diamond_blastp.out.blastp_hits_tsv
 
     // autopeptideml predictions
-    model_combos_ch = input_fastas
+    model_combos_ch = combined_fasta
         .combine(peptide_models_dir)
         .combine(peptide_models_list)
     autopeptideml_predictions(model_combos_ch)
@@ -89,14 +90,14 @@ process deepsig {
     conda "envs/deepsig.yml"
 
     input: 
-    path(faa_file)
+    path(combined_fasta)
 
     output: 
     path("*.tsv"), emit: deepsig_tsv
 
     script: 
     """
-    deepsig -f ${faa_file} -o all_deepsig_predictions.tsv -k gramp -t ${task.cpus}
+    deepsig -f ${combined_fasta} -o all_deepsig_predictions.tsv -k gramp -t ${task.cpus}
     """
 }
 
@@ -111,14 +112,14 @@ process characterize_peptides {
     conda "envs/peptides.yml"
 
     input:
-    path(faa_file)
+    path(combined_fasta)
 
     output: 
     path("*.tsv"), emit: peptides_tsv
 
     script:
     """
-    python ${baseDir}/bin/characterize_peptides.py ${faa_file} all_peptide_characteristics.tsv
+    python ${baseDir}/bin/characterize_peptides.py ${combined_fasta} all_peptide_characteristics.tsv
     """
 }
 
@@ -154,7 +155,7 @@ process diamond_blastp {
     conda "envs/diamond.yml"
 
     input:
-    path(peptides_diamond_db), path(faa_file)
+    path(peptides_diamond_db), path(combined_fasta)
 
     output:
     path("*.tsv"), emit: blastp_hits_tsv
@@ -162,7 +163,7 @@ process diamond_blastp {
     script:
     """
     diamond blastp -d ${peptides_diamond_db} \\
-     -q ${faa_file} \\
+     -q ${combined_fasta} \\
      -o all_blast_results.tsv \\
      --header simple \\
      --max-target-seqs 1 \\
@@ -181,7 +182,7 @@ process autopeptideml_predictions {
     conda "envs/autopeptideml.yml"
 
     input:
-    tuple path(peptides_fasta), path(model_dir), val(model_name)
+    tuple path(combined_fasta), path(model_dir), val(model_name)
 
     output:
     tuple val(model_name), path("*.tsv"), emit: autopeptideml_tsv
@@ -189,7 +190,7 @@ process autopeptideml_predictions {
     script:
     """
     python3 ${baseDir}/bin/run_autopeptideml.py \\
-        --input_fasta ${peptides_fasta} \\
+        --input_fasta ${combined_fasta} \\
         --model_folder "${model_dir}/${model_name}/ensemble" \\
         --model_name ${model_name} \\
         --output_tsv "autopeptideml_${model_name}.tsv"
@@ -207,10 +208,7 @@ process merge_peptide_stats {
     conda "envs/tidyverse.yml"
 
     input:
-    path(deepsig_tsv)
-    path(peptides_tsv)
-    path(blastp_hits_tsv)
-    path(autopeptideml_tsv)
+    path(deepsig_tsv), path(peptides_tsv), path(blastp_hits_tsv), path(autopeptideml_tsv)
 
     output:
     path("*.tsv"), emit: main_results_tsv
