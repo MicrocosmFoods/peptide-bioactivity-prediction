@@ -32,25 +32,25 @@ workflow {
 
     // deepsig predictions
     deepsig(input_fastas)
-    deepsig_results = deepsig.deepsig_tsv
+    deepsig_results = deepsig.out.deepsig_tsv
 
     // peptides.py sequence characterization
     characterize_peptides(input_fastas)
-    peptides_results = characterize_peptides.peptides_tsv
+    peptides_results = characterize_peptides.out.peptides_tsv
 
     // DIAMOND seq similarity to peptide database
     make_diamond_db(peptides_db_ch)
     peptides_dmnd_db = make_diamond_db.peptides_diamond_db
     diamond_blastp_input_ch = peptides_dmnd_db.combine(input_fastas)
     diamond_blastp(diamond_blastp_input_ch)
-    blastp_results = diamond_blastp.blastp_hits_tsv
-    
+    blastp_results = diamond_blastp.out.blastp_hits_tsv
+
     // autopeptideml predictions
     model_combos_ch = input_fastas
         .combine(peptide_models_dir)
         .combine(peptide_models_list)
     autopeptideml_predictions(model_combos_ch)
-    autopeptideml_results = autopeptideml_predictions.autopeptideml_tsv.collect()
+    autopeptideml_results = autopeptideml_predictions.out.autopeptideml_tsv.collect()
     
     // merge all stats
     merge_peptide_stats(deepsig_results, peptides_results, blastp_results, autopeptideml_results)
