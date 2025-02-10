@@ -28,7 +28,7 @@ peptide_models_list = channel.fromPath(params.models_list)
 
 workflow {
     // combine all input fastas into one
-    combine_input_fastas(input_fastas)
+    combine_input_fastas(input_fastas.collect())
     combined_fasta = combine_input_fastas.out.combined_fasta
 
     // deepsig predictions

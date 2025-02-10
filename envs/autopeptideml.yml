@@ -7,5 +7,6 @@ dependencies:
    - biopython=1.83
    - python=3.11.8
    - pip=24.0
+   - pandas=2.1.1
    - pip:
       - autopeptideml==0.2.9

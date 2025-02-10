@@ -1,0 +1,4 @@
+*.log*
+.nextflow
+work/
+test/
