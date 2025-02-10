@@ -208,7 +208,10 @@ process merge_peptide_stats {
     conda "envs/tidyverse.yml"
 
     input:
-    tuple path(deepsig_results), path(peptides_results), path(blastp_results), path(autopeptideml_results)
+    path(deepsig_results)
+    path(peptides_results)
+    path(blastp_results)
+    path(autopeptideml_results)
 
     output:
     path("*.tsv"), emit: main_results_tsv
