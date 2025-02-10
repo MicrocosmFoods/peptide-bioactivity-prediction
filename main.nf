@@ -16,7 +16,7 @@ threads                         : $params.threads
 """
 
 // define channels
-input_fastas = Channel.fromPath("${params.input_dir}/*.fasta")
+input_fastas = Channel.fromPath("${params.input_dir}/*.{fasta,faa,fa}")
 
 peptides_db_ch = channel.fromPath(params.peptides_db)
 peptide_models_dir = channel.fromPath(params.models_dir)
