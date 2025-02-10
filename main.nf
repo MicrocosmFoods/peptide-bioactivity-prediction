@@ -155,7 +155,7 @@ process diamond_blastp {
     conda "envs/diamond.yml"
 
     input:
-    path(peptides_diamond_db), path(combined_fasta)
+    tuple path(peptides_diamond_db), path(combined_fasta)
 
     output:
     path("*.tsv"), emit: blastp_hits_tsv
@@ -208,7 +208,7 @@ process merge_peptide_stats {
     conda "envs/tidyverse.yml"
 
     input:
-    path(deepsig_tsv), path(peptides_tsv), path(blastp_hits_tsv), path(autopeptideml_tsv)
+    tuplepath(deepsig_tsv), path(peptides_tsv), path(blastp_hits_tsv), path(autopeptideml_tsv)
 
     output:
     path("*.tsv"), emit: main_results_tsv
