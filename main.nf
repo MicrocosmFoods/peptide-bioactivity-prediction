@@ -75,7 +75,7 @@ process combine_input_fastas {
 
     script:
     """
-    python ${baseDir}/bin/combine_input_fastas.py ${input_fastas} all_samples_combined.fasta
+    python ${baseDir}/bin/combine_input_fastas.py ${input_fastas} --output_file all_samples_combined.fasta
     """
 }
 
