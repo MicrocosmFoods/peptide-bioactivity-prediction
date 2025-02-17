@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/peptide_bioactivity_predictor/master/nextflow_schema.json",
+  "title": "peptide_bioactivity_predictor pipeline parameters",
+  "description": "Predict bioactivity of peptides from input FASTA files.",
+  "type": "object",
+  "$defs": {
+    "input_output_options": {
+      "title": "Input/output options",
+      "type": "object",
+      "fa_icon": "fas fa-terminal",
+      "description": "Define where the pipeline should find input data and save output data.",
+      "required": ["input_fastas", "outdir"],
+      "properties": {
+        "input_fastas": {
+          "type": "string",
+          "description": "Directory of input FASTA peptides for bioactivity prediction."
+        },
+        "outdir": {
+          "type": "string",
+          "format": "directory-path",
+          "description": "The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure.",
+          "fa_icon": "fas fa-folder-open"
+        }
+      }
+    },
+    "databases": {
+      "title": "Databases",
+      "type": "object",
+      "description": "",
+      "default": "",
+      "properties": {
+        "peptides_db": {
+          "type": "string",
+          "description": "FASTA of known peptides for comparison to input peptides."
+        },
+        "models_list": {
+          "type": "string",
+          "description": "TXT file of list of models that are located in the models_dir that you want to be run for bioactivity prediction."
+        },
+        "models_dir": {
+          "type": "string",
+          "description": "Directory of ML classification models to predict bioactivity."
+        }
+      },
+      "required": ["peptides_db", "models_list", "models_dir"]
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "#/$defs/input_output_options"
+    },
+    {
+      "$ref": "#/$defs/databases"
+    }
+  ]
+}
