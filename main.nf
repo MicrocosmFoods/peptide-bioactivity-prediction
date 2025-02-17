@@ -7,7 +7,7 @@ log.info """\
 
 PREDICT BIOACTIVITY AND PHYSICOCHEMICAL PROPERTIES OF PEPTIDES.
 =================================================================
-input_dir                       : $params.input_dir
+input_fastas                    : $params.input_fastas
 peptides_db                     : $params.peptides_db
 models_dir                      : $params.models_dir
 models_list                     : $params.models_list
@@ -16,7 +16,7 @@ threads                         : $params.threads
 """
 
 // define channels
-input_fastas = Channel.fromPath("${params.input_dir}/*.{fasta,faa,fa}")
+input_fastas = Channel.fromPath("${params.input_fastas}/*.{fasta,faa,fa}")
 
 peptides_db_ch = channel.fromPath(params.peptides_db)
 peptide_models_dir = channel.fromPath(params.models_dir)

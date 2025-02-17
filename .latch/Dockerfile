@@ -22,7 +22,7 @@ arg DEBIAN_FRONTEND=noninteractive
 
 # Latch SDK
 # DO NOT REMOVE
-run pip install latch==2.55.2
+run pip install latch==2.53.10
 run mkdir /opt/latch
 
 # Copy workflow data (use .dockerignore to skip files)
