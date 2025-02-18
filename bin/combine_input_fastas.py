@@ -12,6 +12,13 @@ def is_valid_sequence(seq):
     # Check if sequence exists and isn't empty after stripping whitespace
     return bool(str(seq).strip())
 
+def is_valid_amino_acid_sequence(seq):
+    # Standard amino acids (including ambiguous X)
+    valid_aas = set('ACDEFGHIKLMNPQRSTVWYX')
+    sequence = str(seq).upper()
+    invalid_chars = set(sequence) - valid_aas
+    return len(invalid_chars) == 0
+
 def process_fasta_file(input_file, genome_name, add_prefix=False):
     new_records = {}
     with open(input_file, "r") as fasta_file:
@@ -22,6 +29,11 @@ def process_fasta_file(input_file, genome_name, add_prefix=False):
                 
             if record.seq.endswith('*'):
                 record.seq = record.seq[:-1]
+            
+            # Check for invalid amino acids
+            if not is_valid_amino_acid_sequence(record.seq):
+                print(f"Warning: Removing record {record.id} from {genome_name} due to non-standard amino acids")
+                continue
             
             # Only add genome name prefix if specified
             if add_prefix:
