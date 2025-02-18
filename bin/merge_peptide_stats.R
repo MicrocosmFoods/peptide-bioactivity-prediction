@@ -58,7 +58,8 @@ autopeptideml_df <- map_dfr(autopeptideml_files, function(file) {
 all_peptide_info <- deepsig_info  %>% 
     left_join(peptides_info, by = "peptide_id") %>% 
     left_join(diamond_blast_results, by = "peptide_id") %>% 
-    left_join(autopeptideml_df, by = "peptide_id")
+    left_join(autopeptideml_df, by = "peptide_id")  %>% 
+    select(peptide_id, sequence, everything())
 
 # write to tsv
 write_tsv(all_peptide_info, output_tsv)

@@ -44,5 +44,11 @@ generated_parameters = {
         section_title=None,
         description='Directory of ML classification models to predict bioactivity.',
     ),
+    'kingdom': NextflowParameter(
+        type=str,
+        default='gramp',
+        section_title=None,
+        description='Kingdom of the peptides to be predicted.',
+    ),
 }
 

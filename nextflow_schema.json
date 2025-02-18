@@ -44,6 +44,19 @@
         }
       },
       "required": ["peptides_db", "models_list", "models_dir"]
+    },
+    "additional_parameters": {
+      "title": "Additional Parameters",
+      "type": "object",
+      "description": "",
+      "default": "",
+      "properties": {
+        "kingdom": {
+          "type": "string",
+          "default": "gramp",
+          "description": "Kingdom to be run for DeepSig predictions. Options are euk, gramp, gramn."
+        }
+      }
     }
   },
   "allOf": [
@@ -52,6 +65,9 @@
     },
     {
       "$ref": "#/$defs/databases"
+    },
+    {
+      "$ref": "#/$defs/additional_parameters"
     }
   ]
 }

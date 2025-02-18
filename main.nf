@@ -11,6 +11,7 @@ input_fastas                    : $params.input_fastas
 peptides_db                     : $params.peptides_db
 models_dir                      : $params.models_dir
 models_list                     : $params.models_list
+kingdom                         : $params.kingdom
 outdir                          : $params.outdir
 threads                         : $params.threads
 """
@@ -97,7 +98,7 @@ process deepsig {
 
     script: 
     """
-    deepsig -f ${combined_fasta} -o all_deepsig_predictions.tsv -k gramp -t ${task.cpus}
+    deepsig -f ${combined_fasta} -o all_deepsig_predictions.tsv -k ${params.kingdom} -t ${task.cpus}
     """
 }
 

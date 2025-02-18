@@ -55,7 +55,7 @@ def initialize() -> str:
 
 
 @nextflow_runtime_task(cpu=16, memory=20, storage_gib=100)
-def nextflow_runtime(pvc_name: str, input_fastas: LatchDir, outdir: typing_extensions.Annotated[LatchDir, FlyteAnnotation({'output': True})], peptides_db: LatchFile, models_list: LatchFile, models_dir: LatchDir) -> None:
+def nextflow_runtime(pvc_name: str, input_fastas: LatchDir, outdir: typing_extensions.Annotated[LatchDir, FlyteAnnotation({'output': True})], peptides_db: LatchFile, models_list: LatchFile, models_dir: LatchDir, kingdom: str) -> None:
     shared_dir = Path("/nf-workdir")
 
     exec_name = _get_execution_name()
@@ -118,7 +118,8 @@ def nextflow_runtime(pvc_name: str, input_fastas: LatchDir, outdir: typing_exten
                 *get_flag('outdir', outdir),
                 *get_flag('peptides_db', peptides_db),
                 *get_flag('models_list', models_list),
-                *get_flag('models_dir', models_shared_dir)
+                *get_flag('models_dir', models_shared_dir),
+                *get_flag('kingdom', kingdom)
     ]
 
     print("Launching Nextflow Runtime")
@@ -183,7 +184,7 @@ def nextflow_runtime(pvc_name: str, input_fastas: LatchDir, outdir: typing_exten
 
 
 @workflow(metadata._nextflow_metadata)
-def nf_peptide_bioactivity_predictor(input_fastas: LatchDir, outdir: typing_extensions.Annotated[LatchDir, FlyteAnnotation({'output': True})], peptides_db: LatchFile, models_list: LatchFile, models_dir: LatchDir) -> None:
+def nf_peptide_bioactivity_predictor(input_fastas: LatchDir, outdir: typing_extensions.Annotated[LatchDir, FlyteAnnotation({'output': True})], peptides_db: LatchFile, models_list: LatchFile, models_dir: LatchDir, kingdom: str) -> None:
     """
     peptide_bioactivity_predictor
 
@@ -191,5 +192,5 @@ def nf_peptide_bioactivity_predictor(input_fastas: LatchDir, outdir: typing_exte
     """
 
     pvc_name: str = initialize()
-    nextflow_runtime(pvc_name=pvc_name, input_fastas=input_fastas, outdir=outdir, peptides_db=peptides_db, models_list=models_list, models_dir=models_dir)
+    nextflow_runtime(pvc_name=pvc_name, input_fastas=input_fastas, outdir=outdir, peptides_db=peptides_db, models_list=models_list, models_dir=models_dir, kingdom=kingdom)
 
