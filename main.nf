@@ -84,7 +84,7 @@ process deepsig {
     tag "deepsig_predictions"
     publishDir "${params.outdir}/deepsig", mode: 'copy'
     
-    accelerator 2, type: 'nvidia-t4'
+    accelerator 1, type: 'nvidia-v100'
     cpus = 8
     
     container "public.ecr.aws/biocontainers/deepsig:1.2.5--pyhca03a8a_1"
