@@ -65,7 +65,7 @@ process combine_input_fastas {
     memory = "10 GB"
     cpus = 1
 
-    container "quay.io/biocontainers/mulled-v2-949aaaddebd054dc6bded102520daff6f0f93ce6:aa2a3707bfa0550fee316844baba7752eaab7802-0"
+    container "community.wave.seqera.io/library/pip_biopython_pandas:f400ba26594c2e54"
     conda "envs/biopython.yml"
 
     input:
@@ -87,7 +87,7 @@ process deepsig {
     accelerator 4, type: 'nvidia-v100'
     cpus = 8
     
-    container "public.ecr.aws/biocontainers/deepsig:1.2.5--pyhca03a8a_1"
+    container "community.wave.seqera.io/library/deepsig:1.2.5--4c3835498aaf1d53"
     conda "envs/deepsig.yml"
 
     input: 
@@ -130,7 +130,7 @@ process make_diamond_db {
     memory = "5 GB"
     cpus = 1
 
-    container "public.ecr.aws/biocontainers/diamond:2.1.7--h43eeafb_1"
+    container "community.wave.seqera.io/library/diamond:2.1.16--c582405725a5d6e5"
     conda "envs/diamond.yml"
 
     input:
@@ -152,7 +152,7 @@ process diamond_blastp {
 
     memory = "10 GB"
 
-    container "public.ecr.aws/biocontainers/diamond:2.1.7--h43eeafb_1"
+    container "community.wave.seqera.io/library/diamond:2.1.16--c582405725a5d6e5"
     conda "envs/diamond.yml"
 
     input:
