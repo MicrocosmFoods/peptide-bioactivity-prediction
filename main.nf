@@ -87,7 +87,7 @@ process deepsig {
     accelerator 4, type: 'nvidia-v100'
     cpus = 8
     
-    container "community.wave.seqera.io/library/deepsig:1.2.5--4c3835498aaf1d53"
+    container "elizabethmcd/deepsig:latest"
     conda "envs/deepsig.yml"
 
     input: 
