@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # pip install package dependencies
-RUN pip install biopython==1.78 keras==2.4.3 tensorflow==2.2.0 protobuf==3.20.0
+RUN pip install biopython==1.78 keras==2.4.3 tensorflow==2.2.0 protobuf==3.20.0 numpy==1.23.5
 
 # pip install deepsig
 RUN pip install deepsig-biocomp
@@ -23,4 +23,4 @@ RUN pip install deepsig-biocomp
 RUN apt-get remove -y git gcc g++ make libpython3-dev && apt-get autoremove -y
 
 # environment path
-ENV PATH="/app/deepsig/scripts:${PATH}"
+ENV DEEPSIG_ROOT=/usr/local/lib/python3.8/site-packages/deepsig

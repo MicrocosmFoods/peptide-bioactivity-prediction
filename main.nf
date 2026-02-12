@@ -98,7 +98,7 @@ process deepsig {
 
     script: 
     """
-    deepsig -f ${combined_fasta} -o all_deepsig_predictions.tsv -k ${params.kingdom} -t ${task.cpus}
+    deepsig -f ${combined_fasta} -o all_deepsig_predictions.tsv -k ${params.kingdom}
     """
 }
 
