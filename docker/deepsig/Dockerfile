@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # pip install package dependencies
-RUN pip install biopython==1.78 keras==2.4.3 tensorflow==2.2.0
+RUN pip install biopython==1.78 keras==2.4.3 tensorflow==2.2.0 protobuf==3.20.0
 
 # pip install deepsig
 RUN pip install deepsig-biocomp
