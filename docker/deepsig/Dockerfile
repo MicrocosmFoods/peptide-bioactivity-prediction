@@ -19,8 +19,15 @@ RUN pip install biopython==1.78 keras==2.4.3 tensorflow==2.2.0 protobuf==3.20.0 
 # pip install deepsig
 RUN pip install deepsig-biocomp
 
+# Clone repo and cd for model files
+RUN git clone https://github.com/BolognaBiocomp/deepsig.git /app/deepsig
+
+# point DEEPSIG_ROOT to the cloned repo
+ENV DEEPSIG_ROOT=/app/deepsig
+
+
 # cleanup
 RUN apt-get remove -y git gcc g++ make libpython3-dev && apt-get autoremove -y
 
 # environment path
-ENV DEEPSIG_ROOT=/usr/local/lib/python3.8/site-packages/deepsig
+ENV PATH="/app/deepsig/scripts:${PATH}"
