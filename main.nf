@@ -190,7 +190,7 @@ process autopeptideml_predictions {
 
     script:
     """
-    python3 ${baseDir}/bin/run_autopeptideml_v2_predict.py \\
+    python3 ${baseDir}/bin/run_autopeptideml.py \\
         --input_fasta ${combined_fasta} \\
         --result_dir "${model_dir}/${model_name}" \\
         --model_name ${model_name} \\
