@@ -1,26 +1,34 @@
-# python 3.11.8 full image
+# python full image
 FROM python:3.11.8
 
-# Set the working directory in the container
 WORKDIR /app
 
-# Install system dependencies
+# Install required tools
 RUN apt-get update && apt-get install -y \
     git \
     gcc \
     g++ \
     make \
     libpython3-dev \
+    wget \
+    ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# pip install setup
-RUN pip install --no-cache-dir -U pip setuptools wheel
+# Install MMseqs2
+RUN wget https://mmseqs.com/latest/mmseqs-linux-avx2.tar.gz && \
+    tar xvfz mmseqs-linux-avx2.tar.gz && \
+    mv mmseqs/bin/mmseqs /usr/local/bin/ && \
+    rm -rf mmseqs mmseqs-linux-avx2.tar.gz
 
-# install autopeptideml
-RUN pip install --no-cache-dir \
-    "autopeptideml==2.0.5" \
-    pandas \
-    biopython
+# pip install package dependencies
+RUN pip install scikit-learn==1.3.0 biopython==1.83 pandas==2.1.1
+
+# pip install autopeptideml
+RUN pip install autopeptideml==1.0.1
 
 # cleanup
-RUN apt-get purge -y git && apt-get autoremove -y && rm -rf /var/lib/apt/lists/*
+RUN apt-get remove -y git gcc g++ make libpython3-dev wget && \
+    apt-get autoremove -y && \
+    rm -rf /var/lib/apt/lists/*
+
+ENV PATH="/app/autopeptideml/scripts:${PATH}"
