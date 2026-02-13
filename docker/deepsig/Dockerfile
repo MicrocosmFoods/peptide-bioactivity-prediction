@@ -25,7 +25,6 @@ RUN git clone https://github.com/BolognaBiocomp/deepsig.git /app/deepsig
 # point DEEPSIG_ROOT to the cloned repo
 ENV DEEPSIG_ROOT=/app/deepsig
 
-
 # cleanup
 RUN apt-get remove -y git gcc g++ make libpython3-dev && apt-get autoremove -y
 

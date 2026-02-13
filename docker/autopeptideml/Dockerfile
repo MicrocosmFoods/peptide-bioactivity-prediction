@@ -1,4 +1,4 @@
-# python 3.7.12 full image
+# python 3.11.8 full image
 FROM python:3.11.8
 
 # Set the working directory in the container
@@ -13,14 +13,14 @@ RUN apt-get update && apt-get install -y \
     libpython3-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# pip install package dependencies
-RUN pip install scikit-learn==1.3.0 biopython==1.83 pandas
+# pip install setup
+RUN pip install --no-cache-dir -U pip setuptools wheel
 
-# pip install autopeptideml
-RUN pip install autopeptideml
+# install autopeptideml
+RUN pip install --no-cache-dir \
+    "autopeptideml==2.0.5" \
+    pandas \
+    biopython
 
 # cleanup
-RUN apt-get remove -y git gcc g++ make libpython3-dev && apt-get autoremove -y
-
-# environment path
-ENV PATH="/app/autopeptideml/scripts:${PATH}"
+RUN apt-get purge -y git && apt-get autoremove -y && rm -rf /var/lib/apt/lists/*

@@ -190,9 +190,9 @@ process autopeptideml_predictions {
 
     script:
     """
-    python3 ${baseDir}/bin/run_autopeptideml.py \\
+    python3 ${baseDir}/bin/run_autopeptideml_v2_predict.py \\
         --input_fasta ${combined_fasta} \\
-        --model_folder "${model_dir}/${model_name}/ensemble" \\
+        --result_dir "${model_dir}/${model_name}" \\
         --model_name ${model_name} \\
         --output_tsv "autopeptideml_${model_name}.tsv"
     """
