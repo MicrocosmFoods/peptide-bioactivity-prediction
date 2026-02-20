@@ -1,5 +1,5 @@
 # import full python image
-FROM python:3.14.3
+FROM python:3.11.8
 
 # Set the working directory in the container
 WORKDIR /app
@@ -12,12 +12,11 @@ RUN apt-get update && apt-get install -y \
     make \
     libpython3-dev \
     && rm -rf /var/lib/apt/lists/*
-
 # install dependencies
-RUN pip install biopython==1.86 pandas
+RUN pip install scikit-learn==1.3.0 biopython==1.83 pandas
 
-# install autopeptideml v1.0.6
-RUN pip install autopeptideml==1.0.6
+# install autopeptideml v1.0.1
+RUN pip install autopeptideml==1.0.1
 
 # cleanup
 RUN apt-get remove -y git gcc g++ make libpython3-dev && apt-get autoremove -y
