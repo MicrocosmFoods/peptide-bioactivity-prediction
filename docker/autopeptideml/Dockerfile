@@ -16,8 +16,8 @@ RUN apt-get update && apt-get install -y \
 # install dependencies
 RUN pip install biopython==1.86 pandas
 
-# install autopeptideml v2.0.6 from github source
-RUN pip install git+https://github.com/IBM/AutoPeptideML
+# install autopeptideml v1.0.6
+RUN pip install autopeptideml==1.0.6
 
 # cleanup
 RUN apt-get remove -y git gcc g++ make libpython3-dev && apt-get autoremove -y
